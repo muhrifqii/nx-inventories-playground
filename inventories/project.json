@@ -1,0 +1,111 @@
+{
+  "name": "inventories",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "inventories/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/inventories"
+      },
+      "configurations": {
+        "development": {
+          "mode": "development"
+        },
+        "production": {
+          "mode": "production"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/vite:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "inventories:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "inventories:build:development",
+          "hmr": true
+        },
+        "production": {
+          "buildTarget": "inventories:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "preview": {
+      "executor": "@nx/vite:preview-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "inventories:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "inventories:build:development"
+        },
+        "production": {
+          "buildTarget": "inventories:build:production"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "reportsDirectory": "../coverage/inventories"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "storybook": {
+      "executor": "@nx/storybook:storybook",
+      "options": {
+        "port": 4400,
+        "configDir": "inventories/.storybook"
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    },
+    "build-storybook": {
+      "executor": "@nx/storybook:build",
+      "outputs": ["{options.outputDir}"],
+      "options": {
+        "outputDir": "dist/storybook/inventories",
+        "configDir": "inventories/.storybook"
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    },
+    "test-storybook": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "test-storybook -c inventories/.storybook --url=http://localhost:4400"
+      }
+    },
+    "static-storybook": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "inventories:build-storybook",
+        "staticFilePath": "dist/storybook/inventories"
+      },
+      "configurations": {
+        "ci": {
+          "buildTarget": "inventories:build-storybook:ci"
+        }
+      }
+    }
+  },
+  "tags": []
+}
